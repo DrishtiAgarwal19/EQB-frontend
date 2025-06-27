@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-
 const ExploreDestinations = () => {
   return (
     <div className="body bg-gray-50 min-h-screen w-screen">
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-semibold mb-2">Destination Weddings</h1>
         <p className="text-lg text-gray-600 mb-8">Find the perfect place to say 'I do'</p>
@@ -25,54 +22,56 @@ const ExploreDestinations = () => {
         </div>
 
         {/* Popular Destinations */}
-        <section className="mb-12">
+<section className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Popular Destinations</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+          <div className="popular-destinations grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/300x200" alt="Paris" className="w-full h-32 object-cover" />
               <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Paris, France</p>
+                <h3 className="text-md font-medium text-gray-800">Paris, France</h3>
+                <p className="text-sm text-gray-600">A romantic destination for weddings.</p>
+                <Link to="/destination-venue/1" className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">View Details</Link>
               </div>
             </div>
             {/* End Example Destination Card */}
             {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/300x200" alt="Tuscany" className="w-full h-32 object-cover" />
               <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Tuscany, Italy</p>
+                <h3 className="text-md font-medium text-gray-800">Tuscany, Italy</h3>
+                <p className="text-sm text-gray-600">A charming destination with rolling hills.</p>
+                <Link to="/destination-venue/2" className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">View Details</Link>
               </div>
             </div>
             {/* End Example Destination Card */}
             {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/300x200" alt="Bali" className="w-full h-32 object-cover" />
               <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Bali, Indonesia</p>
+                <h3 className="text-md font-medium text-gray-800">Bali, Indonesia</h3>
+                <p className="text-sm text-gray-600">An exotic destination with beautiful beaches.</p>
+                <Link to="/destination-venue/3" className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">View Details</Link>
               </div>
             </div>
             {/* End Example Destination Card */}
             {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/300x200" alt="Santorini" className="w-full h-32 object-cover" />
               <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Santorini, Greece</p>
+                <h3 className="text-md font-medium text-gray-800">Santorini, Greece</h3>
+                <p className="text-sm text-gray-600">A picturesque destination with stunning sunsets.</p>
+                <Link to="/destination-venue/4" className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">View Details</Link>
               </div>
             </div>
             {/* End Example Destination Card */}
             {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/300x200" alt="Cancun" className="w-full h-32 object-cover" />
               <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Cancun, Mexico</p>
-              </div>
-            </div>
-            {/* End Example Destination Card */}
-            {/* Example Destination Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Maui" className="w-full h-32 object-cover" />
-              <div className="p-3">
-                <p className="text-md font-medium text-gray-800">Maui, Hawaii</p>
+                <h3 className="text-md font-medium text-gray-800">Cancun, Mexico</h3>
+                <p className="text-sm text-gray-600">A vibrant destination with crystal-clear waters.</p>
+                <Link to="/destination-venue/5" className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm">View Details</Link>
               </div>
             </div>
             {/* End Example Destination Card */}
@@ -80,9 +79,9 @@ const ExploreDestinations = () => {
         </section>
 
         {/* Featured Venues */}
-        <section>
+<section>
           <h2 className="text-2xl font-semibold mb-4">Featured Venues</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="featured-venues grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Example Venue Card */}
             <Link to="/venue/1" className="bg-white rounded-lg shadow-md overflow-hidden">
               <img src="https://via.placeholder.com/400x250" alt="Villa Serenity" className="w-full h-48 object-cover" />

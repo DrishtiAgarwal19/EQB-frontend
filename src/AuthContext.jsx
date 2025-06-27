@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:3000";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }) => {
     const checkLoggedIn = async () => {
       if (token) {
         try {
-          
-          const userData = JSON.parse(localStorage.getItem("user"));
-          if (userData) {
+          const userFromLocalStorage = localStorage.getItem("user");
+          if (userFromLocalStorage && userFromLocalStorage !== "undefined") { // Add check for "undefined" string
+            const userData = JSON.parse(userFromLocalStorage);
             setUser(userData);
           }
         } catch (error) {
@@ -43,6 +43,10 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Received non-JSON response from server");
+      }
       const data = await response.json();
       
       if (!response.ok) {
@@ -73,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/auth/register`, {
+      const response = await fetch(`http://localhost:3000/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,6 +86,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
+      console.log("Signup API response data:", JSON.stringify(data, null, 2)); // Log the response data as a string
       
       if (!response.ok) {
         throw new Error(data.message || "Signup failed");
