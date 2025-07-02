@@ -1,42 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const VenueList = () => {
   const navigate = useNavigate();
 
-  const venues = [
-    {
-      id: 1,
-      name: 'The Grand Ballroom',
-      location: 'Downtown Metropolis',
-      rating: 4.5,
-      image: 'https://via.placeholder.com/400x300',
-    },
-    {
-      id: 2,
-      name: 'The Urban Loft',
-      location: 'Central City',
-      rating: 4.2,
-      image: 'https://via.placeholder.com/400x300',
-    },
-    {
-      id: 3,
-      name: 'The Lakeside Pavilion',
-      location: 'Lake Serenity',
-      rating: 4.8,
-      image: 'https://via.placeholder.com/400x300',
-    },
-    {
-      id: 4,
-      name: 'The Historic Manor',
-      location: 'Old Town',
-      rating: 4.0,
-      image: 'https://via.placeholder.com/400x300',
-    },
-  ];
+  const [venues, setVenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchVenues = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/venues"); // Assuming a /venues endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setVenues(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVenues();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-8">Loading venues...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-8 text-red-500">Error: {error.message}</div>;
+  }
+
+  if (venues.length === 0) {
+    return <div className="text-center py-8 text-gray-600">No venues found.</div>;
+  }
 
   return (
-<div className="bg-gray-50 min-h-screen py-8">
+    <div className="bg-gray-50 min-h-screen py-8">
       <div className="px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
           Find Your Perfect Venue
@@ -71,23 +75,24 @@ const VenueList = () => {
         <div className="mt-8 flex overflow-x-auto space-x-6 pb-4">
           {venues.map((venue) => (
             <div
-              key={venue.id}
-              className="flex-none w-80 bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
-              onClick={() => navigate(`/venue/${venue.id}`)}
+              key={venue._id}
+              className="flex-none w-96 bg-white rounded-lg shadow-md overflow-hidden flex flex-row cursor-pointer"
+              onClick={() => navigate(`/venue/${venue._id}`)}
             >
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 w-1/3">
                 <img
-                  className="h-48 w-full object-cover"
-                  src={venue.image}
-                  alt=""
+                  className="h-full w-full object-cover"
+                  src={venue.images?.[0]?.url || "https://via.placeholder.com/300x200"}
+                  alt={venue.hall_name ?? 'Venue Image'}
                 />
               </div>
-              <div className="p-4">
+              <div className="p-4 flex-grow">
                 <h3 className="text-gray-900 font-semibold text-xl">
-                  {venue.name}
+                  {venue.hall_name}
                 </h3>
                 <p className="text-gray-500 mt-1 text-sm">{venue.location}</p>
-                <p className="text-gray-500 mt-1 text-sm">{venue.rating} stars</p>
+                <p className="text-gray-500 mt-1 text-sm">{venue.averageRating} stars</p>
+                <p className="text-gray-700 mt-2">₹{venue.priceperday?.toLocaleString('en-IN')}</p>
               </div>
             </div>
           ))}

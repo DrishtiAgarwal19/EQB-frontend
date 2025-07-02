@@ -16,7 +16,6 @@ import CustomerQuery from "./CustomerQuery.jsx";
 import Wishlist from "./Wishlist.jsx";
 import ExploreDestinations from "./ExploreDestinations.jsx";
 import SpecialOffersList from "./SpecialOffersList.jsx";
-import SpecialOfferDetails from "./SpecialOfferDetails.jsx";
 import Dashboard from "./Dashboard.jsx";
 import DestinationVenueDetails from "./DestinationVenueDetails.jsx";
 import Footer from "./Footer.jsx";
@@ -39,7 +38,6 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/explore-destinations" element={<ExploreDestinations />} />
           <Route path="/special-offers" element={<SpecialOffersList />} />
-          <Route path="/special-offers/:id" element={<SpecialOfferDetails />} />
           <Route path="/venue-list" element={<VenueList />} />
           <Route path="/destination-venue/:id" element={<DestinationVenueDetails />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

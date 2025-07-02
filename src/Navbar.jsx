@@ -65,13 +65,6 @@ const Navbar = () => {
                 <Link to="/services/party-lawns" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Party Lawns & Farmhouses</Link>
                 <Link to="/services/restaurants-lounges" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Restaurants & Lounges for Private Parties</Link>
                 <Link to="/services/hotels-event-packages" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Hotels for Stay + Event Packages</Link>
-                <p className="block px-4 py-2 text-gray-800 font-bold mt-2">🎯 Event Planning Assistance</p>
-                <Link to="/services/event-planner-recommendations" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Event Planner Recommendations</Link>
-                <Link to="/services/theme-decor-services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Theme & Decor Services</Link>
-                <Link to="/services/catering-services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Catering Services</Link>
-                <Link to="/services/photography-videography" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Photography & Videography</Link>
-                <Link to="/services/entertainment-services" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Entertainment Services (DJ, Live Music, Anchors)</Link>
-                <Link to="/services/lighting-sound-setup" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Lighting & Sound Setup</Link>
               </div>
             </div>
           )}
