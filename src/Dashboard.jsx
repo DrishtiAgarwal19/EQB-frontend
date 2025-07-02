@@ -1,120 +1,102 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Assuming AuthContext provides user data
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white p-6 shadow-md flex flex-col justify-between">
-        <div>
-          <div className="flex items-center mb-8">
-            <img src="/public/logo.png" alt="VenueFinder Logo" className="h-8 mr-2" />
-            <span className="text-xl font-bold text-gray-800">VenueFinder</span>
-          </div>
-          <nav className="space-y-4">
-            <Link to="/dashboard" className="flex items-center p-3 rounded-lg bg-gray-100 text-gray-800 font-semibold hover:bg-gray-200 transition-colors">
-              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-              Dashboard
-            </Link>
-            <Link to="/my-bookings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm2 3a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-              My Bookings
-            </Link>
-            <Link to="/wishlist" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"></path></svg>
-              Wishlist
-            </Link>
-            <Link to="/profile" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
-              My Profile
-            </Link>
-            <Link to="/customer-query" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
-              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.445L7 11.454l-1.172 1.172a1 1 0 001.414 1.414L8 12.586l1.172 1.172a1 1 0 001.414-1.414L10 11.414l1.172 1.172a1 1 0 001.414-1.414L12 10.586l1.172-1.172A1 1 0 0012 8a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>
-              Support/Queries
-            </Link>
-          </nav>
-        </div>
-        <button onClick={handleLogout} className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors mt-auto">
-          <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414L7.586 9H4a1 1 0 000 2h3.586l1.707 1.707a1 1 0 001.414-1.414L10.414 10l.293-.293z" clipRule="evenodd"></path></svg>
+      <div className="w-64 bg-gray-200 p-4">
+        <h2 className="text-2xl font-semibold mb-4">VenueFinder</h2>
+        <nav>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/dashboard" className="flex items-center py-2 px-4 bg-gray-300 rounded">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m11-19l-2 2m0 0l-7 7-7-7M19 10v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0a1 1 0 01-1-1v-4a1 1 0 001-1h2a1 1 0 001 1v4a1 1 0 01-1 1"></path></svg>
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-bookings" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                My Bookings
+              </Link>
+            </li>
+            <li>
+              <Link to="/wishlist" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                Wishlist
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-profile" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                My Profile
+              </Link>
+            </li>
+            <li>
+              <Link to="/support" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.169 1.165-2.169 1.859-2.929m0 0V6a2 2 0 112 0v.071m0 0a2 2 0 102.828 2.828M3 12l2.293 2.293m11.414 0l4.293 4.293m0-14.828L5.293 5.293m14.828 0L9.707 18.707M9.707 6.707l4.242 4.243M5.293 18.707l4.242-4.243m7.414 2.586a2 2 0 002.828-2.828"></path></svg>
+                Support/Queries
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        <Link to="/logout" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded mt-auto">
+          <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
           Logout
-        </button>
-      </aside>
+        </Link>
+      </div>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 ml-64">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-800">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
-            </button>
-            <img src="https://via.placeholder.com/40x40" alt="User Avatar" className="w-10 h-10 rounded-full" />
-          </div>
-        </header>
-
-        <p className="text-gray-700 mb-8">Welcome back, {user?.Name || user?.email || 'User'}! Here's an overview of your account activity.</p>
+      <div className="flex-1 p-4">
+        <h1 className="text-3xl font-semibold mb-4">Dashboard</h1>
+        <p>Welcome back, Sarah! Here's an overview of your account activity.</p>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-medium text-gray-600">Total Bookings</h3>
-            <p className="text-4xl font-bold text-gray-900 mt-2">12</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+          <div className="bg-white rounded-md shadow-lg p-4">
+            <h3 className="text-lg font-semibold">Total Bookings</h3>
+            <p className="text-3xl">12</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-medium text-gray-600">Wishlist Count</h3>
-            <p className="text-4xl font-bold text-gray-900 mt-2">5</p>
+          <div className="bg-white rounded-md shadow-lg p-4">
+            <h3 className="text-lg font-semibold">Wishlist Count</h3>
+            <p className="text-3xl">5</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-medium text-gray-600">Upcoming Bookings</h3>
-            <p className="text-4xl font-bold text-gray-900 mt-2">0</p>
+          <div className="bg-white rounded-md shadow-lg p-4">
+            <h3 className="text-lg font-semibold">Upcoming Bookings</h3>
+            <p className="text-3xl">0</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="text-lg font-medium text-gray-600">Notifications</h3>
-            <p className="text-4xl font-bold text-gray-900 mt-2">3</p>
+          <div className="bg-white rounded-md shadow-lg p-4">
+            <h3 className="text-lg font-semibold">Notifications</h3>
+            <p className="text-3xl">3</p>
           </div>
         </div>
 
         {/* My Bookings Section */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">My Bookings</h2>
-          <div className="flex flex-col items-center justify-center bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-            <img src="/public/no-upcoming-bookings.png" alt="No Upcoming Bookings" className="w-64 h-auto mb-6" /> {/* Placeholder image */}
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">No Upcoming Bookings</h3>
-            <p className="text-gray-600 text-center mb-6">You have no bookings scheduled at the moment. Explore venues and plan your next event!</p>
-            <Link to="/explore-destinations" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-              Explore Venues
-            </Link>
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">My Bookings</h2>
+          <div className="bg-white rounded-md shadow-lg p-4 text-center">
+            <img src="https://via.placeholder.com/300x200" alt="No Bookings" className="mx-auto mb-4" />
+            <p>No Upcoming Bookings</p>
+            <Link to="/explore-venues" className="text-blue-500 hover:text-blue-700">Explore Venues</Link>
           </div>
-        </section>
+        </div>
 
         {/* Wishlist Section */}
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Wishlist</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Wishlist Item 1 */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              <img src="/public/the-coastal-retreat.jpeg" alt="The Coastal Retreat" className="w-full h-48 object-cover" /> {/* Placeholder image */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800">The Coastal Retreat</h3>
-              </div>
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Wishlist</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white rounded-md shadow-lg p-4">
+              <img src="https://via.placeholder.com/300x150" alt="Wishlist Item" className="mb-2" />
+              <p>The Coastal Retreat</p>
             </div>
-            {/* Wishlist Item 2 */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              <img src="/public/the-mountain-lodge.jpeg" alt="The Mountain Lodge" className="w-full h-48 object-cover" /> {/* Placeholder image */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800">The Mountain Lodge</h3>
-              </div>
+            <div className="bg-white rounded-md shadow-lg p-4">
+              <img src="https://via.placeholder.com/300x150" alt="Wishlist Item" className="mb-2" />
+              <p>The Mountain Lodge</p>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
   );
 };

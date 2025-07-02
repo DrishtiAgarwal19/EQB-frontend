@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext.jsx';
+import { useAuth } from './AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [isServicesHovered, setIsServicesHovered] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    setIsProfileDropdownOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  };
+
+  const handleDashboardNavigation = () => {
+    navigate('/dashboard');
+    setIsProfileDropdownOpen(false);
   };
 
   return (
@@ -67,7 +77,19 @@ const Navbar = () => {
           )}
         </div>
         {user ? (
-          <Link to="/dashboard" className="hover:text-blue-600">Profile</Link>
+          <div className="relative" onMouseEnter={() => setIsProfileDropdownOpen(true)} onMouseLeave={() => setIsProfileDropdownOpen(false)}>
+            <Link className="focus:outline-none">
+              Profile
+            </Link>
+            {isProfileDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                <div className="py-1">
+                  <Link to="/dashboard" onClick={handleDashboardNavigation} className="block w-full text-left px-4 py-2 text-gray-700">Dashboard</Link>
+                  <Link to="/" onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-700">Logout</Link>
+                </div>
+              </div>
+            )}
+          </div>
         ) : (
           <Link to="/login" className="hover:text-blue-600">Login/Signup</Link>
         )}
@@ -106,7 +128,19 @@ const Navbar = () => {
             )}
           </div>
           {user ? (
-            <Link to="/dashboard" className="block w-full text-center py-2 hover:bg-gray-100">Profile</Link>
+            <div className="relative w-full text-center">
+              <button onClick={handleProfileClick} className="block w-full py-2 focus:outline-none">
+                Profile
+              </button>
+              {isProfileDropdownOpen && (
+                <div className="w-full bg-white rounded-md shadow-lg z-10">
+                  <div className="py-1">
+                    <Link to="/dashboard" onClick={handleDashboardNavigation} className="block w-full text-center py-2 text-gray-700">Dashboard</Link>
+                    <button onClick={handleLogout} className="block w-full text-center py-2 text-gray-700">Logout</button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <Link to="/login" className="block w-full text-center py-2 hover:bg-gray-100">Login/Signup</Link>
           )}

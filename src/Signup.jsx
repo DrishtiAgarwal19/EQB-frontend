@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -9,8 +9,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const { signup, loading } = useAuth();
+  const { signup } = useAuth(); // Removed loading as it's not used for fake signup
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,18 +30,9 @@ const Signup = () => {
       return;
     }
 
-    try {
-      await signup({
-        Name: name,
-        Email: email,
-        phone_no: phone,
-        password: password,
-      });
-      navigate("/"); // Navigate to home page on successful signup
-    } catch (err) {
-      console.error("Error during signup:", err);
-      setError(err.message || "An error occurred during signup. Please try again.");
-    }
+    // Simulate a successful signup
+    const userData = { name, email, phone_no: phone }; // Example user data
+    signup(userData); // This will handle setting user, storing in localStorage, and navigation to /dashboard
   };
 
   return (
@@ -129,12 +119,9 @@ const Signup = () => {
           </div>
           <button
             type="submit"
-            disabled={loading}
-            className={`w-full royal-blue-button text-white py-3 rounded-lg font-semibold transition-shadow shadow-md ${
-              loading ? "cursor-not-allowed" : "hover:shadow-lg"
-            }`}
+            className={`w-full royal-blue-button text-white py-3 rounded-lg font-semibold transition-shadow shadow-md`}
           >
-            {loading ? "Signing Up..." : "Sign Up"}
+            Sign Up
           </button>
         </form>
         <p className="mt-6 text-center text-gray-700">

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useAuth } from "./AuthContext.jsx"; // Adjust the import path as necessary
+import { useAuth } from "./AuthContext.jsx";
 import { Link } from "react-router-dom";
-
-const LOGIN_API_URL = "http://localhost:3000/auth/login"; // API URL for login
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login, loading } = useAuth();
+  const { login } = useAuth(); // Removed loading as it's not used for fake login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,32 +17,9 @@ const Login = () => {
       return;
     }
 
-
-    try {
-      console.log("Email:",email)
-      console.log("Password:",password)
-
-      const response = await fetch(LOGIN_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({Email: email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      // If login is successful, you might want to call the login function from AuthContext
-      // to update the global authentication state and navigate.
-      await login({ Email: email, password }); // This will handle setting user, token, and navigation
-
-    } catch (err) {
-      setError(err.message || "Login failed. Please check your credentials.");
-    }
+    // Simulate a successful login
+    const userData = { email: email, name: "Test User" }; // Example user data
+    login(userData); // This will handle setting user, storing in localStorage, and navigation to /dashboard
   };
 
   return (
@@ -98,12 +73,9 @@ const Login = () => {
               {/*  Button */}
               <button
                 type="submit"
-                disabled={loading}
-                className={`w-full text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 royal-blue-button ${
-                  loading ? "cursor-not-allowed" : "hover:shadow-lg"
-                }`}
+                className={`w-full text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 royal-blue-button`}
               >
-                {loading ? "Logging in..." : "Login"}
+                Login
               </button>
               <p className="mt-6 text-center text-gray-700">
                 <Link to="/forgot-password" className="text-blue-600 font-semibold hover:underline">

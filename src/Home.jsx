@@ -1,8 +1,32 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SpecialOffersSlider from './SpecialOffersSlider.jsx';
 import VenueSlider from './VenueSlider.jsx';
 
 const Home = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [eventType, setEventType] = useState('');
+  const [city, setCity] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [priceRange, setPriceRange] = useState('');
+
+  const eventTypes = [
+    'Wedding', 'Engagement', 'Birthday', 'Corporate Event', 'Banquet',
+    'Conference', 'Party', 'Restaurant Booking', 'Hotel Event', 'Other'
+  ];
+
+  const handleSearch = () => {
+    console.log('Search Query:', searchQuery);
+    console.log('Event Type:', eventType);
+    console.log('City:', city);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Price Range:', priceRange);
+    // Implement actual search logic here, e.g., navigate to a search results page
+    // navigate(`/search?query=${searchQuery}&type=${eventType}&city=${city}&startDate=${startDate}&endDate=${endDate}&priceRange=${priceRange}`);
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
@@ -34,43 +58,94 @@ const Home = () => {
 
       {/* Search Filters Bar */}
       <section className="px-4 w-full md:w-4/5 mx-auto mt-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-6">
-          <input
-            type="text"
-            placeholder="City"
-            className="p-2 border rounded placeholder-gray-700 w-full"
-          />
-          <input
-            type="date"
-            placeholder="Start Date"
-            className="p-2 border rounded placeholder-gray-700 w-full"
-          />
-          <input
-            type="date"
-            placeholder="End Date"
-            className="p-2 border rounded placeholder-gray-700 w-full"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            className="p-2 border rounded placeholder-gray-700 w-full"
-          />
-          <input
-            type="text"
-            placeholder="Event Type"
-            className="p-2 border rounded placeholder-gray-700 w-full"
-          />
-          <button
-            className="royal-blue-button text-white px-4 py-2 rounded w-full"
-            style={{ backgroundColor: 'royalblue' }}
-          >
-            Search
-          </button>
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <div className="flex flex-col sm:flex-row gap-2 mb-6">
+            <div className="flex items-center border rounded overflow-hidden w-full">
+              <input
+                type="text"
+                placeholder="Search City"
+                className="p-2 w-3/4 placeholder-gray-700 focus:outline-none"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <select
+                className="p-2 w-1/4 bg-white focus:outline-none"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              >
+                <option value="">Select</option>
+                <option value="Prayagraj">Prayagraj</option>
+                <option value="Varanasi">Varanasi</option>
+                <option value="Delhi">Delhi</option>
+              </select>
+            </div>
+            <input
+              type="date"
+              placeholder="Start Date"
+              className="p-2 border rounded placeholder-gray-700 w-full"
+              min="2025-06-28"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <input
+              type="date"
+              placeholder="End Date"
+              className="p-2 border rounded placeholder-gray-700 w-full"
+              min="2025-06-28"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+            <div className="flex items-center border rounded overflow-hidden w-full">
+              <input
+                type="text"
+                placeholder="Price Range"
+                className="p-2 w-3/4 placeholder-gray-700 focus:outline-none"
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+              />
+              <select
+                className="p-2 w-1/4 bg-white focus:outline-none"
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+              >
+                <option value="">Select</option>
+                <option value="1000">Under 10,000</option>
+                <option value="2000">10,000 - 20,000</option>
+              </select>
+            </div>
+            {/* New Event Type Search and Dropdown */}
+            <div className="flex items-center border rounded overflow-hidden w-full">
+              <input
+                type="text"
+                placeholder="Search events..."
+                className="p-2 w-3/4 placeholder-gray-700 focus:outline-none"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <select
+                className="p-2 w-1/4 bg-white focus:outline-none"
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+              >
+                <option value="">Select</option>
+                {eventTypes.map((type) => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
+            <button
+              onClick={handleSearch}
+              className="royal-blue-button text-white px-4 py-2 rounded w-full"
+              style={{ backgroundColor: 'royalblue' }}
+            >
+              Search
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Filters Sidebar & Venues Section */}
-      <section className="px-4 grid grid-cols-1 md:grid-cols-12 gap-6">
+      <section className="px-4 mt-8 grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Filters Sidebar */}
         <aside className="md:col-span-3 bg-white p-4 rounded overflow-y-auto max-h-96 mb-6 md:mb-0">
           <h2 className="text-lg font-semibold mb-4">Filters</h2>
@@ -170,11 +245,6 @@ const Home = () => {
             <li>
               <label>
                 <input type="checkbox" className="mr-2" /> Changing Room
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" className="mr-2" /> Parking Available (Valet, Self, Capacity)
               </label>
             </li>
             <li>

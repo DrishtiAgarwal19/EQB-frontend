@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const SpecialOffersSlider = () => {
   const [offers, setOffers] = useState([]);
@@ -36,11 +37,11 @@ const SpecialOffersSlider = () => {
     <div className="mb-8">
       <div className="flex space-x-4 overflow-x-auto scrollbar-hide p-2">
         {offers.map((offer) => (
-          <div key={offer.id} className="bg-white rounded-xl p-4 w-64 h-64 flex-shrink-0">
-            <img src={offer.image} alt={offer.title} className="rounded-md mb-2 object-cover h-32 w-full" style={{ aspectRatio: '1/1' }} />
-            <h3 className="text-md font-semibold">{offer.title}</h3>
-            <p className="text-gray-600 truncate">{offer.description}</p>
-          </div>
+          <Link to={`/special-offers/${offer.id}`} key={offer.id} className="bg-white rounded-xl p-4 w-64 h-64 flex-shrink-0 cursor-pointer">
+            <img src={offer.image[0].url} alt={offer.title} className="rounded-md mb-2 object-cover h-32 w-full" style={{ aspectRatio: '1/1' }} />
+            <h3 className="text-md font-semibold">Get {offer.discount_percent}% @ {offer.venueName}</h3>
+            <p className="text-gray-600 truncate">{offer.location}</p>
+          </Link>
         ))}
       </div>
     </div>
