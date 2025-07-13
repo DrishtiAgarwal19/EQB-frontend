@@ -179,301 +179,370 @@ body {
   background-color: #ddd;
 }
 
-/* Venue Details Page Styles */
-.venue-details-container {
-  font-family: 'Arial', sans-serif;
-  color: #333;
+/* Responsive adjustments for VenueDetails.jsx */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    height: 48vh; /* Adjust height for smaller screens */
+    padding: 1rem;
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem; /* Smaller font size for venue name */
+  }
+
+  .hero-section p {
+    font-size: 1rem; /* Smaller font size for location/reviews */
+  }
+
+  .hero-section .flex-col {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero-section .flex-col button,
+  .hero-section .flex-col p {
+    width: 100%; /* Full width buttons/text */
+    text-align: center;
+  }
+
+  /* Features Section */
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Single column for features on small screens */
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two columns for features on small-medium screens */
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Three columns for features on medium-large screens */
+  }
+
+  /* Location Images */
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Single column for images on small screens */
+  }
+
+  /* Reviews Section */
+  .review-item {
+    padding-bottom: 1rem;
+  }
+
+  .review-item img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .review-item .font-semibold {
+    font-size: 1rem;
+  }
+
+  /* Contact Us Section */
+  .contact-us .flex-col {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-us .flex-col a {
+    width: 100%;
+  }
 }
 
-.hero-section {
-  position: relative;
-  text-align: center;
-  color: white;
+@media (max-width: 480px) {
+  .hero-section h1 {
+    font-size: 1.8rem; /* Further reduce font size for better fit on very small screens */
+    word-wrap: break-word; /* Ensure long names wrap */
+    text-align: center; /* Center align text */
+  }
+
+  .hero-section p {
+    font-size: 1rem; /* Adjust base font size for better readability */
+    text-align: center; /* Center align text */
+  }
+
+  /* Adjustments for other sections on very small screens */
+  .bg-white h2 {
+    font-size: 1.5rem; /* Smaller headings for sections */
+  }
+
+  .bg-white p {
+    font-size: 0.9rem; /* Smaller paragraph text for sections */
+  }
+
+  .feature-item p {
+    font-size: 0.8rem; /* Smaller text for amenity type */
+  }
+
+  .feature-item .text-sm {
+    font-size: 0.7rem; /* Even smaller text for amenity description */
+  }
+
+  .review-item .font-semibold {
+    font-size: 0.9rem; /* Smaller font for review user name */
+  }
+
+  .review-item .text-gray-700 {
+    font-size: 0.8rem; /* Smaller font for review rating text */
+  }
+
+  .flex-col button,
+  .flex-col a {
+    padding: 0.6rem 1rem; /* Adjust button padding for smaller screens */
+    font-size: 0.9rem; /* Adjust button font size */
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 }
 
-.hero-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-}
-
-.hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%; /* Ensure it takes full width to position elements */
+/* CustomerQuery.jsx styles */
+.customer-query-container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #fdfaf7; /* Light background color from image */
+}
+
+.contact-section {
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contact-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.contact-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #fdfaf7; /* Match background of inputs in image */
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #a0a0a0; /* Placeholder color from image */
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #ff7f50; /* Accent color on focus */
+  box-shadow: 0 0 0 3px rgba(255, 127, 80, 0.2);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-button {
+  background-color: #ff7f50; /* Orange color from image */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  float: right; /* Align to the right as in the image */
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #e66a3d;
+  transform: translateY(-2px);
+}
+
+.contact-info {
+  margin-top: 80px; /* Space between form and contact info */
+  padding-top: 30px;
+  border-top: 1px solid #eee;
+}
+
+.contact-info h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.contact-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.live-chat-button,
+.whatsapp-button {
+  background-color: #fdfaf7; /* Light background for buttons */
+  color: #555;
+  padding: 10px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.live-chat-button:hover,
+.whatsapp-button:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+/* Wishlist.jsx styles */
+.wishlist-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+.wishlist-list {
+  list-style: none;
+  padding: 0;
+}
+
+.wishlist-item {
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.venue-name {
-  font-size: 3em;
-  margin-bottom: 0.5em;
+.wishlist-item:last-child {
+  border-bottom: none;
 }
 
-.venue-description {
-  font-size: 1.5em;
-  margin-bottom: 1em;
+.wishlist-item input[type="checkbox"] {
+  margin-right: 15px;
+  transform: scale(1.2);
 }
 
-.book-now-button {
-  background-color: royalblue;
-  color: white;
-  padding: 0.5em 1em;
-  border: none;
-  cursor: pointer;
+.wishlist-item .item-details {
+  flex-grow: 1;
+}
+
+.wishlist-item h3 {
+  margin: 0;
   font-size: 1.2em;
-  border-radius: 5px;
-  position: absolute; /* Position relative to hero-section */
-  bottom: 20px; /* Adjust as needed */
-  right: 20px; /* Adjust as needed */
-  transform: translate(0, 0); /* Reset transform from hero-content */
-}
-
-/* Ensure this is the only definition for .book-now-button */
-
-.photo-gallery {
-  padding: 20px;
-  text-align: center;
-}
-
-.photo-list {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.photo-list img {
-  width: 200px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.wedding-packages {
-  padding: 20px;
-}
-
-.package-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.package {
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.package h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.package .price {
-  font-size: 1.2em;
-  color: #888;
-  margin-bottom: 15px;
-}
-
-.package button {
-  background-color: royalblue;
-  color: white;
-  border: none;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.package ul {
-  list-style: none;
-  padding: 0;
-}
-
-.package ul li {
-  margin-bottom: 5px;
-}
-
-.venue-features {
-  padding: 20px;
-}
-
-.feature-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.feature {
-  width: 150px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.feature .icon {
-  font-size: 2em;
   color: #555;
 }
 
-.location {
-  padding: 20px;
-  text-align: center;
+.wishlist-item p {
+  margin: 5px 0 0;
+  color: #777;
 }
 
-.contact-us {
-  padding: 20px;
-  text-align: center;
-}
-
-.contact-us a {
-  display: inline-block;
-  margin: 0 10px;
-  color: #337ab7;
-  text-decoration: none;
-}
-/* Venue Details Page Styles */
-.venue-details-container {
-  font-family: 'Arial', sans-serif;
-  color: #333;
-}
-
-.hero-section {
-  position: relative;
-  text-align: center;
-  color: white;
-}
-
-.hero-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-}
-
-.hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.venue-name {
-  font-size: 3em;
-  margin-bottom: 0.5em;
-}
-
-.venue-description {
-  font-size: 1.5em;
-  margin-bottom: 1em;
-}
-
-
-.photo-gallery {
-  padding: 20px;
-  text-align: center;
-}
-
-.photo-list {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.photo-list img {
-  width: 200px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.wedding-packages {
-  padding: 20px;
-}
-
-.package-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.package {
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.package h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.package .price {
-  font-size: 1.2em;
-  color: #888;
-  margin-bottom: 15px;
-}
-
-.package button {
-  background-color: royalblue;
+.wishlist-item .item-actions button {
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 0.5em 1em;
-  cursor: pointer;
+  padding: 8px 12px;
   border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.package ul {
-  list-style: none;
-  padding: 0;
+.wishlist-item .item-actions button:hover {
+  background-color: #0056b3;
 }
 
-.package ul li {
-  margin-bottom: 5px;
+.wishlist-item .item-actions button:last-child {
+  background-color: #dc3545;
 }
 
-.venue-features {
-  padding: 20px;
+.wishlist-item .item-actions button:last-child:hover {
+  background-color: #c82333;
 }
 
-.feature-list {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+.compare-button {
+  display: block;
+  width: fit-content;
+  margin: 30px auto 0;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.feature {
-  width: 150px;
-  text-align: center;
-  margin-bottom: 20px;
+.compare-button:disabled {
+  background-color: #90ee90;
+  cursor: not-allowed;
 }
 
-.feature .icon {
-  font-size: 2em;
-  color: #555;
-}
-
-.location {
-  padding: 20px;
-  text-align: center;
-}
-
-.contact-us {
-  padding: 20px;
-  text-align: center;
-}
-
-.contact-us a {
-  display: inline-block;
-  margin: 0 10px;
-  color: #337ab7;
-  text-decoration: none;
+.compare-button:hover:not(:disabled) {
+  background-color: #218838;
 }

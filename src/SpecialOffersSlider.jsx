@@ -37,10 +37,10 @@ const SpecialOffersSlider = () => {
     <div className="mb-8">
       <div className="flex space-x-4 overflow-x-auto scrollbar-hide p-2">
         {offers.map((offer) => (
-          <Link to={`/venue/${offer.venue_id}`} key={offer._id} className="bg-white rounded-xl p-4 w-64 h-64 flex-shrink-0 cursor-pointer">
-            <img src={offer.image?.[0]?.url || "https://via.placeholder.com/300x200"} alt={offer.title ?? 'N/A'} className="rounded-md mb-2 object-cover h-32 w-full" style={{ aspectRatio: '1/1' }} />
-            <h3 className="text-md font-semibold">Get {offer.discount_percent}% @ {offer.venueName ?? 'N/A'}</h3>
-            <p className="text-gray-600 truncate">{offer.location ?? 'N/A'}</p>
+          <Link to={`/venue/${offer.venue_id}`} key={offer._id} className="bg-white rounded-xl p-3 sm:p-4 w-56 sm:w-64 h-auto flex-shrink-0 cursor-pointer">
+            <img src={offer.image?.[0]?.url || "https://via.placeholder.com/300x200"} alt={offer.title ?? 'N/A'} className="rounded-md mb-2 object-cover h-28 sm:h-32 w-full" style={{ aspectRatio: '1/1' }} />
+            <h3 className="text-sm sm:text-md font-semibold">Get {offer.discount_percent}% @ {offer.venueName ?? 'N/A'}</h3>
+            <p className="text-gray-600 text-xs sm:text-sm truncate">{offer.location ?? 'N/A'}</p>
           </Link>
         ))}
       </div>

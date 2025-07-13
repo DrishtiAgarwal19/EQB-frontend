@@ -34,7 +34,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/code-verification" element={<CodeVerification />} />
           <Route path="/new-password" element={<NewPassword />} />
-          <Route path="/customer-query" element={<CustomerQuery />} />
+          <Route path="/customer-query" element={<ProtectedRoute><CustomerQuery /></ProtectedRoute>} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/explore-destinations" element={<ExploreDestinations />} />
           <Route path="/special-offers" element={<SpecialOffersList />} />

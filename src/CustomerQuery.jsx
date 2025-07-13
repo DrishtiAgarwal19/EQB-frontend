@@ -1,58 +1,45 @@
+
 import React from "react";
-import Navbar from "./Navbar";
 
 const CustomerQuery = () => {
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 px-4">
-        <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl">
-          <h2 className="text-3xl font-extrabold mb-8 text-center text-gray-900 tracking-wide">
-            Customer Query
-          </h2>
-          <form className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                required
-                className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                placeholder="Your full name"
-              />
+      <div className="customer-query-container">
+        <div className="contact-section">
+          <h1 className="contact-title">Contact Us</h1>
+          <p className="contact-description">
+            We're here to help! Please fill out the form below or reach out to us directly.
+          </p>
+
+          <form className="contact-form">
+            <div className="form-group">
+              <label htmlFor="name">Your Name</label>
+              <input type="text" id="name" placeholder="Enter your name" />
             </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                placeholder="you@example.com"
-              />
+            <div className="form-group">
+              <label htmlFor="email">Your Email</label>
+              <input type="email" id="email" placeholder="Enter your email" />
             </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-semibold text-gray-700">
-                Message
-              </label>
-              <textarea
-                id="message"
-                rows="4"
-                className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                placeholder="Your message"
-              ></textarea>
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input type="text" id="subject" placeholder="Enter the subject" />
             </div>
-            <button
-              type="submit"
-              className="w-full royal-blue-button text-white py-3 rounded-lg font-semibold transition-shadow shadow-md hover:shadow-lg"
-            >
-              Submit
-            </button>
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <textarea id="message" rows="6" placeholder="Enter your message"></textarea>
+            </div>
+            <button type="submit" className="submit-button">Submit</button>
           </form>
+
+          <div className="contact-info">
+            <h2>Contact Information</h2>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Email: support@venuefinder.com</p>
+            <div className="contact-buttons">
+              <button className="live-chat-button">Live Chat</button>
+              <button className="whatsapp-button">WhatsApp</button>
+            </div>
+          </div>
         </div>
       </div>
     </>

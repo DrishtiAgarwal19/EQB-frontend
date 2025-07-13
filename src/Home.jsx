@@ -39,10 +39,10 @@ const Home = () => {
         className="h-96 py-24 w-full px-4 md:w-4/5 mx-auto flex items-center justify-center"
       >
         <div className="text-center relative">
-          <h3 className="text-3xl md:text-4xl font-semibold mb-4 text-white">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4 text-white">
             Destination Wedding
           </h3>
-          <p className="text-lg md:text-xl text-white max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white max-w-3xl mx-auto">
             EventQuickBook helps you discover and book the perfect venue for
             weddings and events.
           </p>
@@ -334,33 +334,33 @@ const Home = () => {
 
       {/* How it works Section */}
       <section className="px-4 py-8 w-full md:w-4/5 mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-4">How It Works</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4">How It Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Search</h3>
-            <p className="text-gray-600">
-              Find venues based on your specific criteria.
-            </p>
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Search</h3>
+          <p className="text-sm sm:text-base text-gray-600">
+            Find venues based on your specific criteria.
+          </p>
           </div>
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Compare</h3>
-            <p className="text-gray-600">
-              Compare different venues and their offerings.
-            </p>
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Compare</h3>
+          <p className="text-sm sm:text-base text-gray-600">
+            Compare different venues and their offerings.
+          </p>
           </div>
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2">Book</h3>
-            <p className="text-gray-600">
-              Book your perfect venue and make your event a success.
-            </p>
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Book</h3>
+          <p className="text-sm sm:text-base text-gray-600">
+            Book your perfect venue and make your event a success.
+          </p>
           </div>
         </div>
       </section>
 
       {/* About Section */}
       <section className="px-4 py-8 w-full md:w-4/5 mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-4">About EventQuickBook</h2>
-        <p className="text-gray-600">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4">About EventQuickBook</h2>
+        <p className="text-sm sm:text-base text-gray-600">
           EventQuickBook is a platform designed to simplify the process of
           finding and booking venues for weddings and events. We offer a wide
           selection of venues, detailed information, and easy-to-use tools to

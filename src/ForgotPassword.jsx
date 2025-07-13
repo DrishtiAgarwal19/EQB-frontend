@@ -5,16 +5,34 @@ import Navbar from "./Navbar.jsx";
   const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
 
-    // Here you would normally send reset password data to backend
-    // For demo, we assume reset password is successful
-    setMessage("Password reset successful!");
-    navigate("/code-verification");
+    try {
+      const response = await fetch("http://localhost:3000/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(data.message || "Password reset code sent successfully!");
+        navigate("/code-verification");
+      } else {
+        setError(data.message || "Failed to send password reset code.");
+      }
+    } catch (error) {
+      console.error("Error sending password reset request:", error);
+      setError("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
@@ -47,6 +65,11 @@ import Navbar from "./Navbar.jsx";
             {message && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md">
                 {message}
+              </div>
+            )}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md">
+                {error}
               </div>
             )}
 

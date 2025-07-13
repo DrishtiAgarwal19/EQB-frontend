@@ -27,12 +27,12 @@ const Navbar = () => {
     <header className="flex flex-wrap justify-between items-center p-4 bg-white shadow">
       <div className="flex items-center">
         <img src="/src/assets/WhatsApp Image 2025-06-23 at 17.58.19_dcbbe03b.jpg" alt="EventQuickBook Logo" className="h-8" />
-        <span className="text-xl font-bold ml-2" style={{ color: 'black' }}>QualityBook</span>
+        <span className="text-lg sm:text-xl font-bold ml-2" style={{ color: 'black' }}>QualityBook</span>
       </div>
 
       {/* Hamburger menu icon for mobile */}
       <div className="md:hidden">
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-800 focus:outline-none">
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-800 focus:outline-none p-2">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             {isMenuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -44,7 +44,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop navigation */}
-      <nav className="hidden md:flex space-x-4 items-center">
+      <nav className="hidden md:flex space-x-4 items-center text-base">
         <Link to="/" className="hover:text-blue-600">Home</Link>
         <div
           className="relative"
@@ -53,7 +53,7 @@ const Navbar = () => {
         >
           <Link to="/services" className="hover:text-blue-600 cursor-pointer">Our Services</Link>
           {isServicesHovered && (
-            <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10">
+            <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10 text-sm">
               <div className="py-1">
                 <p className="block px-4 py-2 text-gray-800 font-bold">Venue Booking Services</p>
                 <Link to="/services/wedding-venue-booking" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Wedding Venue Booking</Link>
@@ -70,15 +70,15 @@ const Navbar = () => {
           )}
         </div>
         {user ? (
-          <div className="relative" onMouseEnter={() => setIsProfileDropdownOpen(true)} onMouseLeave={() => setIsProfileDropdownOpen(false)}>
-            <Link className="focus:outline-none">
+          <div className="relative">
+            <Link to="#" onClick={handleProfileClick} className="hover:text-blue-600">
               Profile
             </Link>
             {isProfileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 text-sm">
                 <div className="py-1">
-                  <Link to="/dashboard" onClick={handleDashboardNavigation} className="block w-full text-left px-4 py-2 text-gray-700">Dashboard</Link>
-                  <Link to="/" onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-700">Logout</Link>
+                  <Link to="/dashboard" onClick={handleDashboardNavigation} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</Link>
+                  <Link to="/" onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</Link>
                 </div>
               </div>
             )}
@@ -92,7 +92,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <nav className="md:hidden w-full mt-2 flex flex-col space-y-2 items-center">
+        <nav className="md:hidden w-full mt-2 flex flex-col space-y-2 items-center text-sm">
           <Link to="/" className="block w-full text-center py-2 hover:bg-gray-100">Home</Link>
           <div className="relative w-full text-center">
             <Link to="/services" className="block w-full py-2 hover:bg-gray-100 cursor-pointer" onClick={() => setIsServicesHovered(!isServicesHovered)}>Our Services</Link>
@@ -122,9 +122,9 @@ const Navbar = () => {
           </div>
           {user ? (
             <div className="relative w-full text-center">
-              <button onClick={handleProfileClick} className="block w-full py-2 focus:outline-none">
+              <Link to="#" onClick={handleProfileClick} className="block w-full py-2 hover:bg-gray-100">
                 Profile
-              </button>
+              </Link>
               {isProfileDropdownOpen && (
                 <div className="w-full bg-white rounded-md shadow-lg z-10">
                   <div className="py-1">
