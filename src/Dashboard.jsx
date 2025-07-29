@@ -67,7 +67,7 @@ const Dashboard = () => {
             <p className="text-2xl sm:text-3xl">0</p>
           </div>
           <div className="bg-white rounded-md shadow-lg p-4">
-            <h3 className="text-base sm:text-lg font-semibold">Notifications</h3>
+            <h3 className="text-base sm:text-lg font-semibold">Completed Bookings</h3>
             <p className="text-2xl sm:text-3xl">3</p>
           </div>
         </div>

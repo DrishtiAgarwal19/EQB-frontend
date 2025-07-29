@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SpecialOffersSlider from './SpecialOffersSlider.jsx';
 import VenueSlider from './VenueSlider.jsx';
+import axios from 'axios';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [eventType, setEventType] = useState('');
   const [city, setCity] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [priceRange, setPriceRange] = useState('');
+  const navigate = useNavigate();
 
-  const eventTypes = [
-    'Wedding', 'Engagement', 'Birthday', 'Corporate Event', 'Banquet',
-    'Conference', 'Party', 'Restaurant Booking', 'Hotel Event', 'Other'
-  ];
+  const handleSearch = async () => {
+    try {
+      let url = 'http://localhost:3000/venues/search';
+      const params = { city, priceRange };
 
-  const handleSearch = () => {
-    console.log('Search Query:', searchQuery);
-    console.log('Event Type:', eventType);
-    console.log('City:', city);
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-    console.log('Price Range:', priceRange);
-    // Implement actual search logic here, e.g., navigate to a search results page
-    // navigate(`/search?query=${searchQuery}&type=${eventType}&city=${city}&startDate=${startDate}&endDate=${endDate}&priceRange=${priceRange}`);
+      if (startDate && endDate) {
+        url = 'http://localhost:3000/venues/searchByDate';
+        params.startDate = startDate;
+        params.endDate = endDate;
+      }
+
+      const response = await axios.get(url, { params });
+      console.log('Search Results:', response.data);
+      navigate('/venue-list', { state: { venues: response.data } });
+    } catch (error) {
+      console.error('Error searching venues:', error);
+    }
   };
 
   return (
@@ -60,25 +64,13 @@ const Home = () => {
       <section className="px-4 w-full md:w-4/5 mx-auto mt-4">
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex flex-col sm:flex-row gap-2 mb-6">
-            <div className="flex items-center border rounded overflow-hidden w-full">
-              <input
-                type="text"
-                placeholder="Search City"
-                className="p-2 w-3/4 placeholder-gray-700 focus:outline-none"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              <select
-                className="p-2 w-1/4 bg-white focus:outline-none"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              >
-                <option value="">Select</option>
-                <option value="Prayagraj">Prayagraj</option>
-                <option value="Varanasi">Varanasi</option>
-                <option value="Delhi">Delhi</option>
-              </select>
-            </div>
+            <input
+              type="text"
+              placeholder="Search City"
+              className="p-2 border rounded placeholder-gray-700 w-full focus:outline-none"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
             <input
               type="date"
               placeholder="Start Date"
@@ -113,26 +105,7 @@ const Home = () => {
                 <option value="2000">10,000 - 20,000</option>
               </select>
             </div>
-            {/* New Event Type Search and Dropdown */}
-            <div className="flex items-center border rounded overflow-hidden w-full">
-              <input
-                type="text"
-                placeholder="Search events..."
-                className="p-2 w-3/4 placeholder-gray-700 focus:outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <select
-                className="p-2 w-1/4 bg-white focus:outline-none"
-                value={eventType}
-                onChange={(e) => setEventType(e.target.value)}
-              >
-                <option value="">Select</option>
-                {eventTypes.map((type) => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-            </div>
+
             <button
               onClick={handleSearch}
               className="royal-blue-button text-white px-4 py-2 rounded w-full"

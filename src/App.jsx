@@ -19,6 +19,9 @@ import SpecialOffersList from "./SpecialOffersList.jsx";
 import Dashboard from "./Dashboard.jsx";
 import DestinationVenueDetails from "./DestinationVenueDetails.jsx";
 import Footer from "./Footer.jsx";
+import AdminSignup from "./AdminSignup.jsx"; // Import the new AdminSignup component
+import AdminLogin from "./AdminLogin.jsx"; // Import the new AdminLogin component
+import AdminDashboard from "./AdminDashboard.jsx"; // Import the new AdminDashboard component
 import { AuthProvider } from "./AuthContext.jsx";
 
 function App() {
@@ -41,6 +44,9 @@ function App() {
           <Route path="/venue-list" element={<VenueList />} />
           <Route path="/destination-venue/:id" element={<DestinationVenueDetails />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin-signup" element={<AdminSignup />} /> {/* Add the new route */}
+          <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the new route */}
+          <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> {/* Corrected route */}
         </Routes>
         <Footer />
       </ErrorBoundary>

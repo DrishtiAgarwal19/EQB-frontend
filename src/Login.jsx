@@ -1,25 +1,49 @@
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Can be email or phone number
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth(); // Removed loading as it's not used for fake login
+  const [loading, setLoading] = useState(false);
+  const { setUser, setIsAdmin } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please enter both email and password");
+    if (!identifier || !password) {
+      setError("Please enter both email/phone number and password");
       return;
     }
 
-    // Simulate a successful login
-    const userData = { email: email, name: "Test User" }; // Example user data
-    login(userData); // This will handle setting user, storing in localStorage, and navigation to /dashboard
+    setLoading(true);
+    try {
+      console.log("Login: Sending request with identifier:", identifier, "and password:", password);
+      const response = await axios.post("http://localhost:3000/auth/login", {
+        identifier,
+        password,
+      });
+      console.log("Login successful, API response:", response.data);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      setUser(response.data.user);
+      setIsAdmin(false);
+      navigate("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,15 +57,15 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email  */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
+                <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email/Phone Number 
                 </label>
                 <input
-                  id="email"
-                  type="email"
+                  id="identifier"
+                  type="text" // Changed to text as it can be email or phone
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="you@example.com or phone number"
                 />
@@ -73,9 +97,12 @@ const Login = () => {
               {/*  Button */}
               <button
                 type="submit"
-                className={`w-full text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 royal-blue-button`}
+                className={`w-full text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 royal-blue-button ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
               >
-                Login
+                {loading ? "Logging In..." : "Login"}
               </button>
               <p className="mt-6 text-center text-gray-700">
                 <Link to="/forgot-password" className="text-blue-600 font-semibold hover:underline">

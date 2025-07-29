@@ -1,6 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 const ExploreDestinations = () => {
+  const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/destinationWeddingPage');
+        setDestinations(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching destination wedding data:", err);
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchDestinations();
+  }, []);
+
+  if (loading) {
+    return <div className="body bg-gray-50 min-h-screen w-screen flex items-center justify-center">Loading destinations...</div>;
+  }
+
+  if (error) {
+    return <div className="body bg-gray-50 min-h-screen w-screen flex items-center justify-center text-red-600">Error: {error.message}</div>;
+  }
+
   return (
     <div className="body bg-gray-50 min-h-screen w-screen">
       <div className="container mx-auto px-4 py-8">
@@ -25,92 +55,28 @@ const ExploreDestinations = () => {
         <section className="mb-12">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">Popular Destinations</h2>
           <div className="popular-destinations grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
-            {/* Example Destination Card */}
-            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Paris" className="w-full h-28 sm:h-32 object-cover" />
-              <div className="p-2 sm:p-3">
-                <h3 className="text-sm sm:text-md font-medium text-gray-800">Paris, France</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A romantic destination for weddings.</p>
-                <Link to="/destination-venue/1" className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
+            {(Array.isArray(destinations) ? destinations : []).map((destination) => (
+              <div key={destination._id} className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
+                <img src={destination.image_url || "https://via.placeholder.com/300x200"} alt={destination.destination_name} className="w-full h-28 sm:h-32 object-cover" />
+                <div className="p-2 sm:p-3">
+                  <h3 className="text-sm sm:text-md font-medium text-gray-800">{destination.destination_name}</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">{destination.description}</p>
+                  <Link to={`/destination-venue/${destination._id}`} className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
+                </div>
               </div>
-            </div>
-            {/* End Example Destination Card */}
-            {/* Example Destination Card */}
-            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Tuscany" className="w-full h-28 sm:h-32 object-cover" />
-              <div className="p-2 sm:p-3">
-                <h3 className="text-sm sm:text-md font-medium text-gray-800">Tuscany, Italy</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A charming destination with rolling hills.</p>
-                <Link to="/destination-venue/2" className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
-              </div>
-            </div>
-            {/* End Example Destination Card */}
-            {/* Example Destination Card */}
-            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Bali" className="w-full h-28 sm:h-32 object-cover" />
-              <div className="p-2 sm:p-3">
-                <h3 className="text-sm sm:text-md font-medium text-gray-800">Bali, Indonesia</h3>
-                <p className="text-xs sm:text-sm text-gray-600">An exotic destination with beautiful beaches.</p>
-                <Link to="/destination-venue/3" className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
-              </div>
-            </div>
-            {/* End Example Destination Card */}
-            {/* Example Destination Card */}
-            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Santorini" className="w-full h-28 sm:h-32 object-cover" />
-              <div className="p-2 sm:p-3">
-                <h3 className="text-sm sm:text-md font-medium text-gray-800">Santorini, Greece</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A picturesque destination with stunning sunsets.</p>
-                <Link to="/destination-venue/4" className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
-              </div>
-            </div>
-            {/* End Example Destination Card */}
-            {/* Example Destination Card */}
-            <div className="destination-card bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/300x200" alt="Cancun" className="w-full h-28 sm:h-32 object-cover" />
-              <div className="p-2 sm:p-3">
-                <h3 className="text-sm sm:text-md font-medium text-gray-800">Cancun, Mexico</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A vibrant destination with crystal-clear waters.</p>
-                <Link to="/destination-venue/5" className="mt-2 px-3 py-1 sm:px-4 sm:py-2 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm">View Details</Link>
-              </div>
-            </div>
-            {/* End Example Destination Card */}
+            ))}
           </div>
         </section>
 
-        {/* Featured Venues */}
-        <section>
+        {/* Featured Venues - Assuming this data is part of the same API or fetched separately */}
+        {/* For now, I'll remove the hardcoded featured venues as the API only provides destinations */}
+        {/* If the API provides featured venues, I would map them here */}
+        {/* <section>
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">Featured Venues</h2>
           <div className="featured-venues grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {/* Example Venue Card */}
-            <Link to="/venue/1" className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/400x250" alt="Villa Serenity" className="w-full h-40 sm:h-48 object-cover" />
-              <div className="p-3 sm:p-4">
-                <h3 className="text-base sm:text-lg font-semibold mb-1">Villa Serenity, Tuscany</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A stunning villa in the heart of Tuscany</p>
-              </div>
-            </Link>
-            {/* End Example Venue Card */}
-            {/* Example Venue Card */}
-            <Link to="/venue/2" className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/400x250" alt="Ocean's Edge Resort" className="w-full h-40 sm:h-48 object-cover" />
-              <div className="p-3 sm:p-4">
-                <h3 className="text-base sm:text-lg font-semibold mb-1">Ocean's Edge Resort, Cancun</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A luxurious beachfront resort with breathtaking views</p>
-              </div>
-            </Link>
-            {/* End Example Venue Card */}
-            {/* Example Venue Card */}
-            <Link to="/venue/3" className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://via.placeholder.com/400x250" alt="Dunrobin Castle" className="w-full h-40 sm:h-48 object-cover" />
-              <div className="p-3 sm:p-4">
-                <h3 className="text-base sm:text-lg font-semibold mb-1">Dunrobin Castle, Scotland</h3>
-                <p className="text-xs sm:text-sm text-gray-600">A historic castle offering a fairytale wedding experience</p>
-              </div>
-            </Link>
-            {/* End Example Venue Card */}
+            {/* Map fetched featured venues here }
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );

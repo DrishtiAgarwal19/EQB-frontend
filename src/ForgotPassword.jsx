@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar.jsx";
 
-  const ForgotPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
@@ -37,7 +36,6 @@ import Navbar from "./Navbar.jsx";
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 px-4">
         <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-2xl">
           <h2 className="text-3xl font-extrabold mb-8 text-center text-gray-900 tracking-wide">

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -8,31 +9,120 @@ const Signup = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const { signup } = useAuth(); // Removed loading as it's not used for fake signup
+  
+  // Individual error states
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [apiError, setApiError] = useState(""); // For general API errors
+
+  const [loading, setLoading] = useState(false);
+  const { setUser, setIsAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  // Validation functions for individual fields
+  const validateName = (value) => {
+    if (!value) {
+      setNameError("Name is required.");
+      return false;
+    }
+    setNameError("");
+    return true;
+  };
+
+  const validateEmail = (value) => {
+    if (!value) {
+      setEmailError("Email is required.");
+      return false;
+    } else if (!/\S+@\S+\.\S+/.test(value)) {
+      setEmailError("Email is invalid.");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePhone = (value) => {
+    if (!value) {
+      setPhoneError("Phone number is required.");
+      return false;
+    } else if (!/^\d{10}$/.test(value)) {
+      setPhoneError("Phone number must be 10 digits.");
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
+
+  const validatePassword = (value) => {
+    if (!value) {
+      setPasswordError("Password is required.");
+      return false;
+    } else if (value.length < 6) {
+      setPasswordError("Password must be at least 6 characters long.");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
+  const validateConfirmPassword = (value) => {
+    if (!value) {
+      setConfirmPasswordError("Confirm password is required.");
+      return false;
+    } else if (password !== value) {
+      setConfirmPasswordError("Passwords do not match.");
+      return false;
+    }
+    setConfirmPasswordError("");
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setApiError(""); // Clear API error on new submission attempt
 
-    if (!name || !email || !phone || !password || !confirmPassword) {
-      setError("All fields are required.");
-      return;
+    // Validate all fields on submit
+    const isNameValid = validateName(name);
+    const isEmailValid = validateEmail(email);
+    const isPhoneValid = validatePhone(phone);
+    const isPasswordValid = validatePassword(password);
+    const isConfirmPasswordValid = validateConfirmPassword(confirmPassword);
+
+    if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid || !isConfirmPasswordValid) {
+      return; // Stop submission if any validation fails
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:3000/auth/signup", {
+        Name: name,
+        Email: email,
+        phone_no: phone,
+        password,
+      });
+      console.log("Signup successful, API response:", response.data);
+      // Check if response.data.user exists before passing
+      if (response.data && response.data.user) {
+        setUser(response.data.user);
+        setIsAdmin(false);
+        navigate("/");
+      } else {
+        console.error("Signup: API response did not contain user data:", response.data);
+        setApiError("Signup successful, but user data was not returned. Please try logging in.");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setApiError(err.response.data.message);
+      } else {
+        setApiError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
-      return;
-    }
-
-    // Simulate a successful signup
-    const userData = { name, email, phone_no: phone }; // Example user data
-    signup(userData); // This will handle setting user, storing in localStorage, and navigation to /dashboard
   };
 
   return (
@@ -42,9 +132,9 @@ const Signup = () => {
           Sign Up
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
+          {apiError && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <span className="block sm:inline">{error}</span>
+              <span className="block sm:inline">{apiError}</span>
             </div>
           )}
           <div>
@@ -56,10 +146,14 @@ const Signup = () => {
               type="text"
               required
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              onChange={(e) => {
+                setName(e.target.value);
+                validateName(e.target.value); // Validate on change
+              }}
+              className={`mt-2 p-3 w-full border ${nameError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition`}
               placeholder="Your full name"
             />
+            {nameError && <p className="text-red-500 text-xs mt-1">{nameError}</p>}
           </div>
           <div>
             <label htmlFor="phone" className="block text-sm font-semibold text-gray-700">
@@ -70,10 +164,14 @@ const Signup = () => {
               type="tel"
               required
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              onChange={(e) => {
+                setPhone(e.target.value);
+                validatePhone(e.target.value); // Validate on change
+              }}
+              className={`mt-2 p-3 w-full border ${phoneError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition`}
               placeholder="Your phone number"
             />
+            {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
@@ -84,10 +182,14 @@ const Signup = () => {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateEmail(e.target.value); // Validate on change
+              }}
+              className={`mt-2 p-3 w-full border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition`}
               placeholder="you@example.com"
             />
+            {emailError && <p className="text-red-500 text-xs mt-1">{emailError}</p>}
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
@@ -98,10 +200,15 @@ const Signup = () => {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validatePassword(e.target.value); // Validate on change
+                validateConfirmPassword(confirmPassword); // Re-validate confirm password
+              }}
+              className={`mt-2 p-3 w-full border ${passwordError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition`}
               placeholder="********"
             />
+            {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
           </div>
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700">
@@ -112,16 +219,23 @@ const Signup = () => {
               type="password"
               required
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                validateConfirmPassword(e.target.value); // Validate on change
+              }}
+              className={`mt-2 p-3 w-full border ${confirmPasswordError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition`}
               placeholder="********"
             />
+            {confirmPasswordError && <p className="text-red-500 text-xs mt-1">{confirmPasswordError}</p>}
           </div>
           <button
             type="submit"
-            className={`w-full royal-blue-button text-white py-3 rounded-lg font-semibold transition-shadow shadow-md`}
+            className={`w-full royal-blue-button text-white py-3 rounded-lg font-semibold transition-shadow shadow-md ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
         <p className="mt-6 text-center text-gray-700">

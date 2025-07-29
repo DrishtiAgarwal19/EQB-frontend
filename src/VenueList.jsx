@@ -1,41 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const VenueList = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const query = useQuery();
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortOrder, setSortOrder] = useState(""); // 'asc' for low to high, 'desc' for high to low
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(query.get('query') || '');
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      let url = "http://localhost:3000/venues/search";
+      const params = new URLSearchParams();
+      if (searchQuery) {
+        params.append('query', searchQuery);
+      }
+      
+      if (params.toString()) {
+          url = `${url}?${params.toString()}`;
+      }
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setVenues(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchVenues = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let url = "http://localhost:3000/venues";
-        if (searchQuery) {
-          url = `http://localhost:3000/venues/search?query=${encodeURIComponent(searchQuery)}`;
-        } else if (sortOrder) {
-          url = `http://localhost:3000/venues/sortByPrice?sortOrder=${sortOrder}`;
-        }
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setVenues(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (location.state && location.state.venues) {
+      setVenues(location.state.venues);
+      setLoading(false);
+      return;
+    }
 
-    fetchVenues();
-  }, [sortOrder, searchQuery]);
+    handleSearch();
+  }, [searchQuery, location.state]);
 
   if (loading) {
     return <div className="text-center py-8">Loading venues...</div>;
@@ -56,41 +70,26 @@ const VenueList = () => {
           Find Your Perfect Venue
         </h2>
         <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-start items-center gap-4 flex-wrap">
-          <div className="relative inline-block text-left w-full sm:w-auto">
+          <div className="relative text-left w-full flex">
             <input
               type="text"
               placeholder="Search by name or location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="appearance-none bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm w-full"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+              className="appearance-none bg-white border border-gray-300 rounded-l-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm flex-grow"
             />
-          </div>
-          <div className="relative inline-block text-left w-full sm:w-auto">
-            <select className="appearance-none bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm w-full">
-              <option>Capacity</option>
-              <option>50-100</option>
-              <option>100-200</option>
-              <option>200+</option>
-            </select>
-          </div>
-          <div className="relative inline-block text-left w-full sm:w-auto">
-            <select className="appearance-none bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm w-full">
-              <option>Event Type</option>
-              <option>Wedding</option>
-              <option>Corporate</option>
-              <option>Party</option>
-            </select>
-          </div>
-          <div className="relative inline-block text-left w-full sm:w-auto">
-            <select
-              className="appearance-none bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm w-full"
-              onChange={(e) => setSortOrder(e.target.value)}
-              value={sortOrder}
+            <button
+              onClick={handleSearch}
+              className="bg-royal-blue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md"
+              style={{ backgroundColor: 'royalblue', color: 'white' }}
             >
-              <option value="">Sort by Price</option>
-              <option value="asc">Price: Low to High</option>
-              <option value="desc">Price: High to Low</option>
-            </select>
+              Search
+            </button>
           </div>
         </div>
 
