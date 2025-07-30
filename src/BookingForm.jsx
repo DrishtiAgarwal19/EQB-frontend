@@ -217,7 +217,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                       <option value="Corporate Event">Corporate Event</option>
                       <option value="Other">Other</option>
                     </select>
-                     {eventType === 'Other' && (
+                    {eventType === 'Other' && (
                       <input
                         type="text"
                         placeholder="Specify event type"
@@ -225,7 +225,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                         value={customEventType}
                         onChange={(e) => setCustomEventType(e.target.value)}
                       />
-                     )}
+                    )}
                   </div>
                 </div>
                 <input

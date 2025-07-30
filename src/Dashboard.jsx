@@ -28,13 +28,13 @@ const Dashboard = () => {
               </Link>
             </li>
             <li>
-              <Link to="/my-profile" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
+              <Link to="/profile" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
                 <svg className="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 My Profile
               </Link>
             </li>
             <li>
-              <Link to="/support" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
+              <Link to="/customer-query" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
                 <svg className="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.169 1.165-2.169 1.859-2.929m0 0V6a2 2 0 112 0v.071m0 0a2 2 0 102.828 2.828M3 12l2.293 2.293m11.414 0l4.293 4.293m0-14.828L5.293 5.293m14.828 0L9.707 18.707M9.707 6.707l4.242 4.243M5.293 18.707l4.242-4.243m7.414 2.586a2 2 0 002.828-2.828"></path></svg>
                 Support/Queries
               </Link>

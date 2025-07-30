@@ -22,6 +22,8 @@ import Footer from "./Footer.jsx";
 import AdminSignup from "./AdminSignup.jsx"; // Import the new AdminSignup component
 import AdminLogin from "./AdminLogin.jsx"; // Import the new AdminLogin component
 import AdminDashboard from "./AdminDashboard.jsx"; // Import the new AdminDashboard component
+import UserProfile from "./UserProfile.jsx"; // Import the new UserProfile component
+import MyBookings from "./MyBookings.jsx"; // Import the new MyBookings component
 import { AuthProvider } from "./AuthContext.jsx";
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
           <Route path="/admin-signup" element={<AdminSignup />} /> {/* Add the new route */}
           <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the new route */}
           <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> {/* Corrected route */}
+          <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} /> {/* Add the new UserProfile route */}
+          <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} /> {/* Add the new MyBookings route */}
         </Routes>
         <Footer />
       </ErrorBoundary>

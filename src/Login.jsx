@@ -30,10 +30,26 @@ const Login = () => {
       console.log("Login successful, API response:", response.data);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        // Assuming the API response for login directly contains user data or we fetch it immediately
+        // and then pass it to the login function from AuthContext
+        const token = response.data.token;
+        try {
+          const userResponse = await axios.get("http://localhost:3000/auth/user", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log("User data fetch successful:", userResponse.data);
+          login(userResponse.data.user); // Use the login function from AuthContext
+          navigate("/"); // Navigate to home page after successful login and context update
+        } catch (userErr) {
+          console.error("Error fetching user data:", userErr);
+          setError("Login successful, but failed to fetch user data.");
+          // Even if user data fetch fails, we might still want to navigate to home
+          // or handle this case specifically (e.g., redirect to a generic dashboard)
+          navigate("/");
+        }
       }
-      setUser(response.data.user);
-      setIsAdmin(false);
-      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       if (err.response && err.response.data && err.response.data.message) {

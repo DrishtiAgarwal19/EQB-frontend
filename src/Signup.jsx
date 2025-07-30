@@ -19,7 +19,7 @@ const Signup = () => {
   const [apiError, setApiError] = useState(""); // For general API errors
 
   const [loading, setLoading] = useState(false);
-  const { setUser, setIsAdmin } = useAuth();
+  const { signup } = useAuth(); // Use the signup function from AuthContext
   const navigate = useNavigate();
 
   // Validation functions for individual fields
@@ -104,11 +104,12 @@ const Signup = () => {
         password,
       });
       console.log("Signup successful, API response:", response.data);
-      // Check if response.data.user exists before passing
       if (response.data && response.data.user) {
-        setUser(response.data.user);
-        setIsAdmin(false);
-        navigate("/");
+        signup(response.data.user); // Use the signup function from AuthContext
+        navigate("/"); // Navigate to home page
+      } else if (response.data) {
+        signup(response.data); // If user data is directly in response.data
+        navigate("/"); // Navigate to home page
       } else {
         console.error("Signup: API response did not contain user data:", response.data);
         setApiError("Signup successful, but user data was not returned. Please try logging in.");
