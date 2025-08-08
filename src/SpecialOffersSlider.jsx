@@ -9,7 +9,7 @@ const SpecialOffersSlider = ({ limit = 5 }) => {
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/popularOffers");
+        const response = await fetch("http://localhost:3000/offers/popular");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

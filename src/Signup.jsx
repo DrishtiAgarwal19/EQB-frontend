@@ -17,6 +17,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [apiError, setApiError] = useState(""); // For general API errors
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [loading, setLoading] = useState(false);
   const { setUser, setIsAdmin } = useAuth();
@@ -104,14 +105,17 @@ const Signup = () => {
         password,
       });
       console.log("Signup successful, API response:", response.data);
-      // Check if response.data.user exists before passing
-      if (response.data && response.data.user) {
-        setUser(response.data.user);
+      console.log("response.data.user:", response.data.user);
+      // Check if response.data.message exists before passing
+      if (response.data && response.data.message) {
+        setUser(null);
         setIsAdmin(false);
-        navigate("/");
+        setSuccessMessage("Signup successful!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         console.error("Signup: API response did not contain user data:", response.data);
-        setApiError("Signup successful, but user data was not returned. Please try logging in.");
       }
     } catch (err) {
       console.error("Signup error:", err);
@@ -135,6 +139,11 @@ const Signup = () => {
           {apiError && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
               <span className="block sm:inline">{apiError}</span>
+            </div>
+          )}
+          {successMessage && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">{successMessage}</span>
             </div>
           )}
           <div>

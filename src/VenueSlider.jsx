@@ -11,7 +11,7 @@ const VenueSlider = () => {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const response = await fetch(`${API_URL}/popularVenues`);
+        const response = await fetch(`${API_URL}/venues/popular`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
