@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { setUser, setIsAdmin } = useAuth();
+  const { setUser, setIsAdmin, login } = useAuth(); // Added 'login' from useAuth
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -34,12 +34,13 @@ const Login = () => {
         // and then pass it to the login function from AuthContext
         const token = response.data.token;
         try {
-          const userResponse = await axios.get("http://localhost:3000/auth/user", {
+          const userResponse = await axios.get("http://localhost:3000/user/profile", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           console.log("User data fetch successful:", userResponse.data);
+          console.log("User object from API:", userResponse.data.user); // Add this line for debugging
           login(userResponse.data.user); // Use the login function from AuthContext
           navigate("/"); // Navigate to home page after successful login and context update
         } catch (userErr) {

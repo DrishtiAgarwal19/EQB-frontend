@@ -13,10 +13,38 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError("Authentication token not found. Please log in again.");
+          return;
+        }
+        const response = await axios.get("http://localhost:3000/user/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const profileData = response.data;
+        setFullName(profileData.Name || profileData.name || "");
+        setEmail(profileData.Email || profileData.email || "");
+        setPhoneNumber(profileData.phone_no || profileData.phone_number || "");
+      } catch (err) {
+        console.error("Error fetching user profile:", err);
+        setError("Failed to load user profile. Please try again.");
+      }
+    };
+
+    fetchUserProfile();
+  }, []); // Empty dependency array to run once on mount
+
+  useEffect(() => {
+    // This useEffect will now primarily handle updates if the user object in AuthContext changes
+    // after the initial fetch, or if the user logs in/out.
     if (user) {
-      setFullName(user.name || "");
-      setEmail(user.email || "");
-      setPhoneNumber(user.phone_number || "");
+      setFullName(user.name || user.Name || "");
+      setEmail(user.email || user.Email || "");
+      setPhoneNumber(user.phone_number || user.phone_no || "");
     }
   }, [user]);
 
@@ -35,7 +63,7 @@ const UserProfile = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:3000/auth/user/profile",
+        "http://localhost:3000L/user/profile",
         {
           name: fullName,
           email: email,
@@ -70,8 +98,8 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-10">
       <div className="max-w-2xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-900">
-          Account
+        <h2 className="text-4xl font-extrabold mb-8 text-gray-900">
+          Profile
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -117,10 +145,37 @@ const UserProfile = () => {
             />
           </div>
 
-          <div className="text-left">
+          <div className="flex justify-between items-center">
             <Link to="/forgot-password" className="text-blue-600 font-semibold hover:underline text-lg">
               Reset Password
             </Link>
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={() => {
+                  // Reset form fields to initial fetched values
+                  if (user) {
+                    setFullName(user.name || user.Name || "");
+                    setEmail(user.email || user.Email || "");
+                    setPhoneNumber(user.phone_number || user.phone_no || "");
+                  }
+                  setMessage("");
+                  setError("");
+                }}
+                className="px-6 py-3 rounded-lg font-semibold shadow-md transition duration-300 bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-lg"
+              >
+                Discard
+              </button>
+              <button
+                type="submit"
+                className={`px-6 py-3 rounded-lg font-semibold shadow-md transition duration-300 bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-lg ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Change"}
+              </button>
+            </div>
           </div>
 
           {message && (
@@ -135,15 +190,6 @@ const UserProfile = () => {
             </div>
           )}
 
-          <button
-            type="submit"
-            className={`w-full bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-lg ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Change Information"}
-          </button>
         </form>
       </div>
     </div>

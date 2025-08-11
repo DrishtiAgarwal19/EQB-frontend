@@ -24,6 +24,10 @@ import AdminLogin from "./AdminLogin.jsx"; // Import the new AdminLogin componen
 import AdminDashboard from "./AdminDashboard.jsx"; // Import the new AdminDashboard component
 import UserProfile from "./UserProfile.jsx"; // Import the new UserProfile component
 import MyBookings from "./MyBookings.jsx"; // Import the new MyBookings component
+import AdminVenueList from "./AdminVenueList.jsx"; // Import the new AdminVenueList component
+import AdminBookingList from "./AdminBookingList.jsx"; // Import the new AdminBookingList component
+import AdminUserList from "./AdminUserList.jsx"; // Import the new AdminUserList component
+import AdminAddVenue from "./AdminAddVenue.jsx"; // Import the new AdminAddVenue component
 import { AuthProvider } from "./AuthContext.jsx";
 
 function App() {
@@ -49,6 +53,10 @@ function App() {
           <Route path="/admin-signup" element={<AdminSignup />} /> {/* Add the new route */}
           <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the new route */}
           <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> {/* Corrected route */}
+          <Route path="/admin/venues" element={<ProtectedRoute><AdminVenueList /></ProtectedRoute>} /> {/* Add the new AdminVenueList route */}
+          <Route path="/admin/bookings" element={<ProtectedRoute><AdminBookingList /></ProtectedRoute>} /> {/* Add the new AdminBookingList route */}
+          <Route path="/admin/users" element={<ProtectedRoute><AdminUserList /></ProtectedRoute>} /> {/* Add the new AdminUserList route */}
+          <Route path="/admin/add-venue" element={<ProtectedRoute><AdminAddVenue /></ProtectedRoute>} /> {/* Add the new AdminAddVenue route */}
           <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} /> {/* Add the new UserProfile route */}
           <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} /> {/* Add the new MyBookings route */}
         </Routes>

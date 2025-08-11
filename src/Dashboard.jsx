@@ -1,7 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import axios from 'axios';
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const userName = user?.name || 'User'; // Get user name from context, default to 'User'
+  const [totalBookings, setTotalBookings] = useState(0);
+  const [bookedVenues, setBookedVenues] = useState([]);
+
+  useEffect(() => {
+    const fetchTotalBookings = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/reports/bookings/total');
+        setTotalBookings(response.data.totalBookings);
+      } catch (error) {
+        console.error('Error fetching total bookings:', error);
+        setTotalBookings('N/A'); // Set to N/A or handle error display
+      }
+    };
+
+    const fetchBookedVenues = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/reports/bookings/venues');
+        setBookedVenues(response.data.bookedVenues); // Assuming the API returns an array of venues
+      } catch (error) {
+        console.error('Error fetching booked venues:', error);
+        setBookedVenues([]); // Set to empty array on error
+      }
+    };
+
+    fetchTotalBookings();
+    fetchBookedVenues();
+  }, []);
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -49,18 +80,14 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-4 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-4">Dashboard</h1>
-        <p className="text-sm sm:text-base">Welcome back, Sarah! Here's an overview of your account activity.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-4">{userName}'s Dashboard</h1>
+        <p className="text-sm sm:text-base">Welcome back, {userName}! Here's an overview of your account activity.</p>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
           <div className="bg-white rounded-md shadow-lg p-4">
             <h3 className="text-base sm:text-lg font-semibold">Total Bookings</h3>
-            <p className="text-2xl sm:text-3xl">12</p>
-          </div>
-          <div className="bg-white rounded-md shadow-lg p-4">
-            <h3 className="text-base sm:text-lg font-semibold">Wishlist Count</h3>
-            <p className="text-2xl sm:text-3xl">5</p>
+            <p className="text-2xl sm:text-3xl">{totalBookings}</p>
           </div>
           <div className="bg-white rounded-md shadow-lg p-4">
             <h3 className="text-base sm:text-lg font-semibold">Upcoming Bookings</h3>
@@ -75,11 +102,28 @@ const Dashboard = () => {
         {/* My Bookings Section */}
         <div className="mt-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">My Bookings</h2>
-          <div className="bg-white rounded-md shadow-lg p-4 text-center">
-            <img src="https://via.placeholder.com/300x200" alt="No Bookings" className="mx-auto mb-4 w-full max-w-xs" />
-            <p className="text-sm sm:text-base">No Upcoming Bookings</p>
-            <Link to="/explore-venues" className="text-blue-500 hover:text-blue-700 text-sm sm:text-base">Explore Venues</Link>
-          </div>
+          {bookedVenues.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {bookedVenues.map((venue) => (
+                <div key={venue.id} className="bg-white rounded-md shadow-lg p-4">
+                  <img src={venue.imageUrl || "https://via.placeholder.com/300x200"} alt={venue.name} className="mb-2 w-full h-auto object-cover rounded" />
+                  <h3 className="text-base sm:text-lg font-semibold">{venue.name}</h3>
+                  <p className="text-sm text-gray-600">{venue.location}</p>
+                  <p className="text-sm text-gray-600">Date: {venue.booking_dates && venue.booking_dates.join(' to ')}</p>
+                  <p className="text-sm text-gray-600">Guests: {venue.guest_quantity}</p>
+                  <p className="text-sm text-gray-600">Event Type: {venue.purpose}</p>
+                  {/* Add more venue details as needed */}
+                  <Link to={`/venue/${venue.id}`} className="text-blue-500 hover:text-blue-700 text-sm sm:text-base mt-2 block">View Details</Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-md shadow-lg p-4 text-center">
+              <img src="https://via.placeholder.com/300x200" alt="No Bookings" className="mx-auto mb-4 w-full max-w-xs" />
+              <p className="text-sm sm:text-base">No Upcoming Bookings</p>
+              <Link to="/explore-venues" className="text-blue-500 hover:text-blue-700 text-sm sm:text-base">Explore Venues</Link>
+            </div>
+          )}
         </div>
 
         {/* Wishlist Section */}
