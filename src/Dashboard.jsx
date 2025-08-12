@@ -1,7 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import axios from 'axios';
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const userName = user?.name || 'User'; // Get user name from context, default to 'User'
+  const [totalBookings, setTotalBookings] = useState(0);
+  const [bookedVenues, setBookedVenues] = useState([]);
+
+  useEffect(() => {
+    const fetchTotalBookings = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/reports/bookings/total');
+        setTotalBookings(response.data.totalBookings);
+      } catch (error) {
+        console.error('Error fetching total bookings:', error);
+        setTotalBookings('N/A'); // Set to N/A or handle error display
+      }
+    };
+
+    const fetchBookedVenues = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/reports/bookings/venues');
+        setBookedVenues(response.data.bookedVenues); // Assuming the API returns an array of venues
+      } catch (error) {
+        console.error('Error fetching booked venues:', error);
+        setBookedVenues([]); // Set to empty array on error
+      }
+    };
+
+    fetchTotalBookings();
+    fetchBookedVenues();
+  }, []);
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -28,13 +59,13 @@ const Dashboard = () => {
               </Link>
             </li>
             <li>
-              <Link to="/my-profile" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
+              <Link to="/profile" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
                 <svg className="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 My Profile
               </Link>
             </li>
             <li>
-              <Link to="/support" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
+              <Link to="/customer-query" className="flex items-center py-2 px-4 hover:bg-gray-300 rounded text-sm sm:text-base">
                 <svg className="h-4 w-4 sm:h-5 sm:w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.169 1.165-2.169 1.859-2.929m0 0V6a2 2 0 112 0v.071m0 0a2 2 0 102.828 2.828M3 12l2.293 2.293m11.414 0l4.293 4.293m0-14.828L5.293 5.293m14.828 0L9.707 18.707M9.707 6.707l4.242 4.243M5.293 18.707l4.242-4.243m7.414 2.586a2 2 0 002.828-2.828"></path></svg>
                 Support/Queries
               </Link>
@@ -49,18 +80,14 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-4 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-4">Dashboard</h1>
-        <p className="text-sm sm:text-base">Welcome back, Sarah! Here's an overview of your account activity.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-4">{userName}'s Dashboard</h1>
+        <p className="text-sm sm:text-base">Welcome back, {userName}! Here's an overview of your account activity.</p>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
           <div className="bg-white rounded-md shadow-lg p-4">
             <h3 className="text-base sm:text-lg font-semibold">Total Bookings</h3>
-            <p className="text-2xl sm:text-3xl">12</p>
-          </div>
-          <div className="bg-white rounded-md shadow-lg p-4">
-            <h3 className="text-base sm:text-lg font-semibold">Wishlist Count</h3>
-            <p className="text-2xl sm:text-3xl">5</p>
+            <p className="text-2xl sm:text-3xl">{totalBookings}</p>
           </div>
           <div className="bg-white rounded-md shadow-lg p-4">
             <h3 className="text-base sm:text-lg font-semibold">Upcoming Bookings</h3>
@@ -75,11 +102,28 @@ const Dashboard = () => {
         {/* My Bookings Section */}
         <div className="mt-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">My Bookings</h2>
-          <div className="bg-white rounded-md shadow-lg p-4 text-center">
-            <img src="https://via.placeholder.com/300x200" alt="No Bookings" className="mx-auto mb-4 w-full max-w-xs" />
-            <p className="text-sm sm:text-base">No Upcoming Bookings</p>
-            <Link to="/explore-venues" className="text-blue-500 hover:text-blue-700 text-sm sm:text-base">Explore Venues</Link>
-          </div>
+          {bookedVenues.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {bookedVenues.map((venue) => (
+                <div key={venue.id} className="bg-white rounded-md shadow-lg p-4">
+                  <img src={venue.imageUrl || "https://via.placeholder.com/300x200"} alt={venue.name} className="mb-2 w-full h-auto object-cover rounded" />
+                  <h3 className="text-base sm:text-lg font-semibold">{venue.name}</h3>
+                  <p className="text-sm text-gray-600">{venue.location}</p>
+                  <p className="text-sm text-gray-600">Date: {venue.booking_dates && venue.booking_dates.join(' to ')}</p>
+                  <p className="text-sm text-gray-600">Guests: {venue.guest_quantity}</p>
+                  <p className="text-sm text-gray-600">Event Type: {venue.purpose}</p>
+                  {/* Add more venue details as needed */}
+                  <Link to={`/venue/${venue.id}`} className="text-blue-500 hover:text-blue-700 text-sm sm:text-base mt-2 block">View Details</Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-md shadow-lg p-4 text-center">
+              <img src="https://via.placeholder.com/300x200" alt="No Bookings" className="mx-auto mb-4 w-full max-w-xs" />
+              <p className="text-sm sm:text-base">No Upcoming Bookings</p>
+              <Link to="/explore-venues" className="text-blue-500 hover:text-blue-700 text-sm sm:text-base">Explore Venues</Link>
+            </div>
+          )}
         </div>
 
         {/* Wishlist Section */}

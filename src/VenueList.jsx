@@ -14,6 +14,25 @@ const VenueList = () => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState(query.get('query') || '');
 
+  // Function to fetch all venues (for initial load or when no search query)
+  const fetchAllVenues = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("http://localhost:3000/venues"); // Assuming this endpoint fetches all venues
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setVenues(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to handle search
   const handleSearch = async () => {
     setLoading(true);
     setError(null);
@@ -22,6 +41,7 @@ const VenueList = () => {
       const params = new URLSearchParams();
       if (searchQuery) {
         params.append('query', searchQuery);
+        params.append('location', searchQuery); // Send searchQuery as location as well
       }
       
       if (params.toString()) {
@@ -45,11 +65,10 @@ const VenueList = () => {
     if (location.state && location.state.venues) {
       setVenues(location.state.venues);
       setLoading(false);
-      return;
+    } else {
+      fetchAllVenues(); // Fetch all venues on initial load if no specific venues are passed
     }
-
-    handleSearch();
-  }, [searchQuery, location.state]);
+  }, [location.state]); // Only re-run if location.state changes (e.g., navigation with state)
 
   if (loading) {
     return <div className="text-center py-8">Loading venues...</div>;

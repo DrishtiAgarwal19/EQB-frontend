@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }) => {
     const userIsAdmin = !!(processedUser && processedUser.admin_id); // Check if the signed-up user is an admin
     setIsAdmin(userIsAdmin);
     console.log('AuthContext: User signed up, state updated. isAdmin:', userIsAdmin, 'user:', processedUser);
-    navigate('/'); // Always navigate to home page after signup
   };
 
   const logout = () => {

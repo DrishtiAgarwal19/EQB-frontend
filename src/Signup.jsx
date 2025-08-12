@@ -20,7 +20,7 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const { setUser, setIsAdmin } = useAuth();
+  const { signup } = useAuth(); // Use the signup function from AuthContext
   const navigate = useNavigate();
 
   // Validation functions for individual fields

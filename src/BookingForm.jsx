@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './styles.css';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
@@ -28,6 +28,14 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
   const [showTermsModal, setShowTermsModal] = useState(false);
 
   const { user } = useAuth();
+
+  const today = useMemo(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }, []);
 
   useEffect(() => {
     const fetchEventTypes = async () => {
@@ -181,6 +189,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                   className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 focus:outline-none focus:border-blue-400 text-gray-500"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
+                  min={today} // Set minimum date to today
                 />
                 <label htmlFor="toDate" className="block text-gray-700 text-sm font-bold mb-2">To:</label>
                 <input
@@ -190,6 +199,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                   className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 focus:outline-none focus:border-blue-400 text-gray-500"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
+                  min={fromDate || today} // Set minimum date to fromDate or today
                 />
                 {availabilityMessage && (
                   <p className={`text-sm ${availabilityMessage.includes('booked') ? 'text-red-500' : 'text-green-500'}`}>
@@ -217,7 +227,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                       <option value="Corporate Event">Corporate Event</option>
                       <option value="Other">Other</option>
                     </select>
-                     {eventType === 'Other' && (
+                    {eventType === 'Other' && (
                       <input
                         type="text"
                         placeholder="Specify event type"
@@ -225,7 +235,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
                         value={customEventType}
                         onChange={(e) => setCustomEventType(e.target.value)}
                       />
-                     )}
+                    )}
                   </div>
                 </div>
                 <input
