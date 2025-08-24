@@ -17,7 +17,7 @@ const VenueDetails = () => {
 
   const fetchRatings = useCallback(async () => {
     try {
-      const ratingsResponse = await axios.get(`http://localhost:3000/ratings/${id}`);
+      const ratingsResponse = await axios.get(`http://localhost:3000/venues/${id}/ratings`);
       setRatings(ratingsResponse.data);
     } catch (error) {
       console.error("Error fetching ratings:", error);
@@ -28,7 +28,7 @@ const VenueDetails = () => {
   useEffect(() => {
     const fetchVenueDetails = async () => {
       try {
-        const venueResponse = await fetch(`http://localhost:3000/halls/${id}`);
+        const venueResponse = await fetch(`http://localhost:3000/venues/${id}`);
         if (!venueResponse.ok) {
           throw new Error(`HTTP error! status: ${venueResponse.status}`);
         }

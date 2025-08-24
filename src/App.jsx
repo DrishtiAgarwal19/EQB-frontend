@@ -22,14 +22,27 @@ import Footer from "./Footer.jsx";
 import AdminSignup from "./AdminSignup.jsx"; // Import the new AdminSignup component
 import AdminLogin from "./AdminLogin.jsx"; // Import the new AdminLogin component
 import AdminDashboard from "./AdminDashboard.jsx"; // Import the new AdminDashboard component
-import { AuthProvider } from "./AuthContext.jsx";
+import ListVenues from "./admin/ListVenues.jsx";
+import AddVenue from "./admin/AddVenue.jsx";
+import ViewVenue from "./admin/ViewVenue.jsx";
+import EditVenue from "./admin/EditVenue.jsx";
+import { AuthProvider, useAuth } from "./AuthContext.jsx";
 
-function App() {
+function AppContent() {
+  const { loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
-    <AuthProvider>
-      <ErrorBoundary>
-        <Navbar />
-        <Routes>
+    <ErrorBoundary>
+      <Navbar />
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -47,9 +60,20 @@ function App() {
           <Route path="/admin-signup" element={<AdminSignup />} /> {/* Add the new route */}
           <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the new route */}
           <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> {/* Corrected route */}
+          <Route path="/admin/venues" element={<ProtectedRoute><ListVenues /></ProtectedRoute>} />
+          <Route path="/admin/venues/add" element={<ProtectedRoute><AddVenue /></ProtectedRoute>} />
+          <Route path="/admin/venues/view/:id" element={<ProtectedRoute><ViewVenue /></ProtectedRoute>} />
+          <Route path="/admin/venues/edit/:id" element={<ProtectedRoute><EditVenue /></ProtectedRoute>} />
         </Routes>
         <Footer />
       </ErrorBoundary>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   );
 }

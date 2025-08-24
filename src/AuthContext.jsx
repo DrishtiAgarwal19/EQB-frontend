@@ -5,12 +5,15 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // On initial load, check localStorage for user data
+  // On initial load, check localStorage for user data and token
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('user');
-      if (storedUser && storedUser !== 'undefined') {
+      const storedToken = localStorage.getItem('token');
+      
+      if (storedUser && storedUser !== 'undefined' && storedToken) {
         const parsedUser = JSON.parse(storedUser);
         // Ensure consistent user object structure for frontend
         const processedUser = {
@@ -22,13 +25,20 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin(userIsAdmin);
         console.log('AuthContext: Loaded user from localStorage:', processedUser, 'isAdmin:', userIsAdmin);
       } else {
-        console.log('AuthContext: No user found in localStorage or it was "undefined".');
+        console.log('AuthContext: No valid user/token found in localStorage.');
+        // Clear any invalid data
+        if (!storedToken) {
+          localStorage.removeItem('user');
+        }
       }
     } catch (error) {
       console.error("AuthContext: Failed to parse user from localStorage:", error);
       localStorage.removeItem('user'); // Clear invalid data
+      localStorage.removeItem('token'); // Clear invalid token
       setUser(null);
       setIsAdmin(false);
+    } finally {
+      setLoading(false);
     }
   }, []); // Empty dependency array means this runs once on mount
 
@@ -66,17 +76,17 @@ export const AuthProvider = ({ children }) => {
     const userIsAdmin = !!(processedUser && processedUser.admin_id); // Check if the signed-up user is an admin
     setIsAdmin(userIsAdmin);
     console.log('AuthContext: User signed up, state updated. isAdmin:', userIsAdmin, 'user:', processedUser);
-    navigate('/'); // Always navigate to home page after signup
   };
 
   const logout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     setIsAdmin(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, login, signup, logout, setUser, setIsAdmin }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, login, signup, logout, setUser, setIsAdmin }}>
       {children}
     </AuthContext.Provider>
   );
