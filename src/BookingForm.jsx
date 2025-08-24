@@ -87,7 +87,7 @@ const BookingForm = ({ venueName, venueId, onClose }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/bookings/availability/check', {
+      const response = await axios.post('http://localhost:3000/bookings/availability/check', {
         hall_id: venueId,
         booking_dates: [fromDate, toDate],
       });

@@ -6,11 +6,14 @@ const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const { setUser, setIsAdmin } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
       const response = await fetch('http://localhost:3000/auth/admin/login', {
         method: 'POST',
@@ -25,18 +28,27 @@ const AdminLogin = () => {
 
       console.log('AdminLogin: Raw response:', response);
       const data = await response.json();
-      console.log('AdminLogin: Parsarsed data:', data);
+      console.log('AdminLogin: Parsed data:', data);
 
-        if (response.ok) {
-          setUser(data.user);
-          setIsAdmin(true);
-          navigate('/');
-        } else {
-          alert(`Login failed: ${data.message || 'Invalid credentials'}`);
+      if (response.ok) {
+        // Store the JWT token
+        if (data.token) {
+          localStorage.setItem('token', data.token);
         }
+        
+        // Use the login method from AuthContext
+        login(data.admin);
+        
+        // Navigate to admin dashboard
+        navigate('/admin-dashboard');
+      } else {
+        alert(`Login failed: ${data.message || 'Invalid credentials'}`);
+      }
     } catch (error) {
       console.error('Error during admin login:', error);
       alert('An error occurred during login. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,9 +128,10 @@ const AdminLogin = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
         </form>
